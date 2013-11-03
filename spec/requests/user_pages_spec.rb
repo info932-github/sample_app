@@ -36,7 +36,7 @@ describe "User pages" do
 
 	        it { should have_title(full_title('Sign up')) }
 	        it { should have_content('error') }
-	        it { should_not have_content('Password digest') }
+	        it { should have_content("Name can't be blank") }
 	      end
 	    end
 

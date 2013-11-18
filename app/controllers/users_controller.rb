@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :signed_in_user_filter, only: [:new, :create]
   before_action :signed_in_user, only: [:index, :edit, :update]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
@@ -30,6 +31,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(user_params)
+      sign_in @user
       flash[:success] = "Profile updated"
       redirect_to @user
     else
@@ -64,4 +66,9 @@ class UsersController < ApplicationController
   def admin_user
     redirect_to(root_url) unless current_user.admin?
   end
+  def signed_in_user_filter
+    if signed_in?
+        redirect_to root_path, notice: "Already logged in"
+    end
+end
 end

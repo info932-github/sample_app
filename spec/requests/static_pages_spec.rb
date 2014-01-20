@@ -36,6 +36,16 @@ describe "Static pages" do
       it "should show the total feeds" do
         expect(page).to have_content("micropost".pluralize(user.feed.count))
       end
+      describe "follower/following counts" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          other_user.follow!(user)
+          visit root_path
+        end
+
+        it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("1 followers", href: followers_user_path(user)) }
+      end
     end
     it_should_behave_like "all static pages"
     it { should_not have_title('| Home') }

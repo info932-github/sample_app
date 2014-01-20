@@ -10,11 +10,6 @@ class PasswordResetsController < ApplicationController
 
   def edit
   	@user = User.find_by_password_reset_token!(params[:id])
-  	# if @user
-  	# 	render 'edit'
-  	# else
-  	# 	render :file => "#{Rails.root.to_s}/public/404.html",  :status => 404
-  	# end
   end
   def update
 	  @user = User.find_by_password_reset_token!(params[:id])
@@ -24,7 +19,7 @@ class PasswordResetsController < ApplicationController
 	  	#delete the password_reset_token
 	  	@user.password_reset_sent_at = nil
 	  	@user.password_reset_token = nil
-	  	@user.save!
+	  	@user.save(:validate => false)
 	    redirect_to root_url, :notice => "Password has been reset."
 	  else
 	    render :edit
